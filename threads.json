@@ -1,0 +1,73 @@
+{
+    "meu_assistente": {
+        "minha_thread": [
+            {
+                "role": "user",
+                "content": "Qual \u00e9 a previs\u00e3o do tempo para hoje?"
+            },
+            {
+                "role": "assistant",
+                "content": "Desculpe, mas n\u00e3o consigo fornecer informa\u00e7\u00f5es em tempo real, como a previs\u00e3o do tempo atual. Eu posso te ajudar com informa\u00e7\u00f5es gerais sobre como obter previs\u00f5es do tempo em seu local, se desejar. Posso ajudar com mais alguma coisa?"
+            }
+        ],
+        "minha_thread2": [
+            {
+                "role": "user",
+                "content": "Qual \u00e9 capital da Fran\u00e7a?"
+            },
+            {
+                "role": "assistant",
+                "content": "A capital da Fran\u00e7a \u00e9 Paris. Paris \u00e9 uma cidade mundialmente famosa por sua arquitetura, arte, moda e gastronomia."
+            },
+            {
+                "role": "user",
+                "content": "Em que ano foi escrito a teorial especial da relatividade?"
+            },
+            {
+                "role": "assistant",
+                "content": "A teoria especial da relatividade foi publicada por Albert Einstein em 1905."
+            },
+            {
+                "role": "user",
+                "content": "e a teoria geral?"
+            },
+            {
+                "role": "assistant",
+                "content": "A Teoria Geral refere-se ao conjunto de princ\u00edpios te\u00f3ricos b\u00e1sicos que fundamentam determinado campo do conhecimento ou \u00e1rea de estudo. Por exemplo, a Teoria Geral da Administra\u00e7\u00e3o engloba os princ\u00edpios fundamentais da gest\u00e3o de organiza\u00e7\u00f5es, enquanto a Teoria Geral do Estado aborda os fundamentos te\u00f3ricos do Estado e do poder pol\u00edtico. Voc\u00ea tem algum campo espec\u00edfico de estudo ou \u00e1rea de interesse em mente para falarmos sobre a Teoria Geral?"
+            },
+            {
+                "role": "user",
+                "content": "Qual a capital do Brasil?"
+            },
+            {
+                "role": "assistant",
+                "content": "A capital do Brasil \u00e9 Bras\u00edlia."
+            },
+            {
+                "role": "user",
+                "content": ""
+            },
+            {
+                "role": "assistant",
+                "content": "Ol\u00e1! Como posso ajudar voc\u00ea hoje?"
+            },
+            {
+                "role": "user",
+                "content": "Qual a capital do Brasil?"
+            },
+            {
+                "role": "assistant",
+                "content": "A capital do Brasil \u00e9 Bras\u00edlia. Posso te ajudar com mais alguma informa\u00e7\u00e3o?"
+            },
+            {
+                "role": "user",
+                "content": "Qual a capital do Brasil?\n"
+            },
+            {
+                "role": "assistant",
+                "content": "A capital do Brasil \u00e9 Bras\u00edlia."
+            }
+        ]
+    },
+    "my_assistant": {}
+}
