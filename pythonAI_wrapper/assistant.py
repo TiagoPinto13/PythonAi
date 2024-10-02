@@ -3,9 +3,11 @@
 import os
 from typing import List, Dict
 from openai import OpenAI
+from openai import OpenAI
+
 
 class OpenAIAssistant:
-    def __init__(self, api_key: str, name: str, model: str = 'gpt-4', instructions: str = ''):
+    def __init__(self, api_key: str, name: str, model: str = 'gpt-4', instructions: str = '', threads=None):
         """
         Inicializa o assistente OpenAI com a chave API, nome, modelo e instruções iniciais.
 
@@ -14,24 +16,33 @@ class OpenAIAssistant:
             name (str): O nome do assistente.
             model (str, optional): O modelo de linguagem a ser usado. Padrão é 'gpt-4'.
             instructions (str, optional): Instruções iniciais para o assistente. Padrão é uma string vazia.
-
-        Raises:
-            ValueError: Se a chave API for inválida.
-            openai.error.InvalidRequestError: Se houver um problema ao criar o assistente na API da OpenAI.
+            threads (dict, optional): Dicionário de threads associadas ao assistente.
         """
-        self.client = OpenAI(api_key=api_key)
+        self.api_key = api_key
+        self.client = OpenAI(api_key= self.api_key)
+
         self.name = name
         self.model = model
         self.instructions = instructions
         self.context_files: List[str] = []
-        self.threads: Dict[str, List[Dict]] = {}
-        self.assistant = self.client.beta.assistants.create(
-            name=name,
-            instructions=instructions,
-            model=model
-        )
+        self.threads: Dict[str, List[Dict]] = threads if threads is not None else {}  # Inicializa threads, se não houver
 
-    
+        # Inicializa o cliente da API OpenAI
+
+    def get_response(self, prompt: str):
+        """Obtém uma resposta do assistente para um prompt dado."""
+        # A estrutura de mensagens deve ser atualizada para o novo formato da API.
+        response = self.client.chat.completions.create(  # Usar self.client
+            model=self.model,
+            messages=[
+                {"role": "system", "content": self.instructions},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return response.choices[0].message.content
+
+
+
     def set_model(self, model: str):
         """
         Define o modelo a ser utilizado, tanto localmente quanto no OpenAI.
@@ -43,43 +54,38 @@ class OpenAIAssistant:
             ValueError: Se o modelo fornecido não é suportado.
         """
         self.model = model
-        
+
     def add_context_file(self, file_path, thread_id):
         thread_dir = os.path.join("thread_files", thread_id)
         os.makedirs(thread_dir, exist_ok=True)
-        try:
-            os.makedirs(thread_dir, exist_ok=True)
-        except OSError as e:
-            print(f"Error creating directory {thread_dir}: {e}")
-            raise
-        # Get the filename from the original path
+        
+        # Obter o nome do arquivo a partir do caminho original
         file_name = os.path.basename(file_path)
 
-        # Create the new file path in the thread directory
+        # Criar o novo caminho do arquivo no diretório da thread
         new_file_path = os.path.join(thread_dir, file_name)
-
-        client = OpenAI()  # Add this line
 
         with open(file_path, "rb") as source_file:
             with open(new_file_path, "wb") as dest_file:
                 dest_file.write(source_file.read())
-        file_object = client.files.create(
-            file=open("path/to/your/file", "rb"),
+        
+        # Adiciona o arquivo ao sistema
+        file_object = self.client.files.create(  # Usar self.client
+            file=open(new_file_path, "rb"),  # Corrigido para usar new_file_path
             purpose="assistants"
         )
 
-        content="",
-        file_ids=[file_object.id]
-        # Add the file to the thread
-        self.client.beta.threads.messages.create(
+        # Adicionar o arquivo à thread
+        self.client.beta.threads.messages.create(  # Usar self.client
             thread_id=thread_id,
             role="user",
             content="",
             file_ids=[file_object.id]
         )
-        
+
         return file_object.id
-        
+
+
     def add_context_folder(self, folder_path: str, thread_id: str):
         """
         Adiciona todos os arquivos PDF de uma pasta.
@@ -98,7 +104,7 @@ class OpenAIAssistant:
             if file.endswith('.pdf'):
                 self.add_context_file(os.path.join(folder_path, file), thread_id)
 
-                
+
     def start_thread(self, thread_id: str):
         """
         Inicia uma nova thread de conversação.
@@ -113,39 +119,33 @@ class OpenAIAssistant:
             self.threads[thread_id] = []
         else:
             raise ValueError(f"Thread {thread_id} já existe.")
-    
+
     def send_prompt(self, thread_id: str, prompt: str):
         """
-        Envia um prompt para uma thread existente.
-        
+        Envia um prompt para o assistente na thread especificada.
+
         Args:
-            thread_id (str): O ID da thread a ser usada.
+            thread_id (str): ID da thread na qual enviar o prompt.
             prompt (str): O prompt a ser enviado.
-        
+
         Returns:
-            str: A resposta do assistente.
+            str: Resposta do assistente.
+        
+        Raises:
+            ValueError: Se a thread não for encontrada.
         """
-        if thread_id in self.threads:
-            thread = self.client.beta.threads.create()
-            message = self.client.beta.threads.messages.create(
-                thread_id=thread.id,
-                role="user",
-                content=prompt
-            )
-            run = self.client.beta.threads.runs.create(
-                thread_id=thread.id,
-                assistant_id=self.assistant.id
-            )
-            run = self.client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
-            while run.status != "completed":
-                run = self.client.beta.threads.runs.retrieve(thread_id=thread.id, run_id=run.id)
-            
-            messages = self.client.beta.threads.messages.list(thread_id=thread.id)
-            response = messages.data[0].content[0].text.value
-            self.threads[thread_id].append({"prompt": prompt, "response": response})
-            return response
-        else:
+        if thread_id not in self.threads:
             raise ValueError(f"Thread {thread_id} não encontrada.")
+
+        # Obter a resposta
+        response = self.get_response(prompt)
+
+        # Adiciona a mensagem e a resposta ao histórico da thread
+        self.threads[thread_id].append({"role": "user", "content": prompt})
+        self.threads[thread_id].append({"role": "assistant", "content": response})
+
+        return response
+
 
     def get_thread_history(self, thread_id: str):
         """
@@ -161,7 +161,7 @@ class OpenAIAssistant:
             return self.threads[thread_id]
         else:
             raise ValueError(f"Thread {thread_id} não encontrada.")
-    
+
     def get_name(self):
         """
         Retorna o nome do assistente.
@@ -170,7 +170,7 @@ class OpenAIAssistant:
             str: O nome do assistente.
         """
         return self.name
-    
+
     def delete(self):
         """
         Deleta o assistente.
