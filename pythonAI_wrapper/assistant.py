@@ -170,3 +170,13 @@ class OpenAIAssistant:
             str: O nome do assistente.
         """
         return self.name
+    
+    def delete(self):
+        """
+        Deleta o assistente.
+        """
+        if self.assistant:
+            self.client.beta.assistants.delete(assistant_id=self.assistant.id)
+            self.assistant = None
+        else:
+            raise ValueError("Assistente não encontrado.")

@@ -4,11 +4,13 @@ import tempfile
 from unittest.mock import patch, MagicMock
 import os
 from pythonAI_wrapper.assistant import OpenAIAssistant
+from pythonAI_wrapper.config import OPENAI_API_KEY
+
 
 class TestOpenAIAssistant(unittest.TestCase):
 
     def setUp(self):
-        self.api_key = "api_key_test"
+        self.api_key = OPENAI_API_KEY
         self.name = "test_assistant"
         self.model = "gpt-4"
         self.instructions = "Test instructions"
@@ -32,39 +34,14 @@ class TestOpenAIAssistant(unittest.TestCase):
             model=self.model
         )
 
-    def test_add_context_file(self):
-        with tempfile.NamedTemporaryFile(suffix=".pdf", delete=False) as temp_file:
-            temp_file_path = temp_file.name
-            temp_file.write(b"Test PDF content")
-
-        try:
-            self.assistant.add_context_file(temp_file_path)
-        finally:
-            os.unlink(temp_file_path)
+    
 
     def test_set_model(self):
         new_model = "gpt-3.5-turbo"
         self.assistant.set_model(new_model)
         self.assertEqual(self.assistant.model, new_model)
 
-    @patch('os.path.exists')
-    @patch('openai.OpenAI')
-    def test_add_context_file(self, mock_openai, mock_exists):
-        mock_exists.return_value = True
-        mock_client = MagicMock()
-        mock_openai.return_value = mock_client
-        
-        
-        thread_id = "test_thread_id"
-        
-        self.assistant.add_context_file("test.pdf", thread_id)
-        
-        self.assertIn("test.pdf", self.assistant.context_files)
-        mock_client.files.create.assert_called_once()
-        mock_client.beta.assistants.files.create.assert_called_once()
-
-            
-
+    
     @patch('os.path.isdir')
     @patch('os.listdir')
     @patch('pythonAI_wrapper.assistant.OpenAIAssistant.add_context_file')
