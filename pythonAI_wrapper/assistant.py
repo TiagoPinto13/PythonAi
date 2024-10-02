@@ -58,25 +58,26 @@ class OpenAIAssistant:
     def add_context_file(self, file_path, thread_id):
         thread_dir = os.path.join("thread_files", thread_id)
         os.makedirs(thread_dir, exist_ok=True)
-        
+
         # Obter o nome do arquivo a partir do caminho original
         file_name = os.path.basename(file_path)
 
         # Criar o novo caminho do arquivo no diretório da thread
         new_file_path = os.path.join(thread_dir, file_name)
 
+        # Copiar o arquivo para o diretório da thread
         with open(file_path, "rb") as source_file:
             with open(new_file_path, "wb") as dest_file:
                 dest_file.write(source_file.read())
-        
+
         # Adiciona o arquivo ao sistema
-        file_object = self.client.files.create(  # Usar self.client
-            file=open(new_file_path, "rb"),  # Corrigido para usar new_file_path
+        file_object = self.client.files.create(
+            file=open(new_file_path, "rb"),
             purpose="assistants"
         )
 
         # Adicionar o arquivo à thread
-        self.client.beta.threads.messages.create(  # Usar self.client
+        self.client.beta.threads.messages.create(
             thread_id=thread_id,
             role="user",
             content="",
@@ -102,7 +103,9 @@ class OpenAIAssistant:
 
         for file in os.listdir(folder_path):
             if file.endswith('.pdf'):
+                # Chama o método add_context_file para cada PDF encontrado
                 self.add_context_file(os.path.join(folder_path, file), thread_id)
+
 
 
     def start_thread(self, thread_id: str):
@@ -120,47 +123,7 @@ class OpenAIAssistant:
         else:
             raise ValueError(f"Thread {thread_id} já existe.")
 
-    def send_prompt(self, thread_id: str, prompt: str):
-        """
-        Envia um prompt para o assistente na thread especificada.
 
-        Args:
-            thread_id (str): ID da thread na qual enviar o prompt.
-            prompt (str): O prompt a ser enviado.
-
-        Returns:
-            str: Resposta do assistente.
-        
-        Raises:
-            ValueError: Se a thread não for encontrada.
-        """
-        if thread_id not in self.threads:
-            raise ValueError(f"Thread {thread_id} não encontrada.")
-
-        # Obter a resposta
-        response = self.get_response(prompt)
-
-        # Adiciona a mensagem e a resposta ao histórico da thread
-        self.threads[thread_id].append({"role": "user", "content": prompt})
-        self.threads[thread_id].append({"role": "assistant", "content": response})
-
-        return response
-
-
-    def get_thread_history(self, thread_id: str):
-        """
-        Retorna o histórico da thread.
-        
-        Args:
-            thread_id (str): O ID da thread a ser usada.
-        
-        Returns:
-            List[Dict]: O histórico da thread.
-        """
-        if thread_id in self.threads:
-            return self.threads[thread_id]
-        else:
-            raise ValueError(f"Thread {thread_id} não encontrada.")
 
     def get_name(self):
         """

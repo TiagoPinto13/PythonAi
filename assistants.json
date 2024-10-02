@@ -1,1 +1,12 @@
-{"meu_assistente": {"api_key": "sk-svcacct-GtVAsT9HVeP8kEE3HhmWpt6T39Pb4uC-4SV2dWTMfb4ZNLoyxCgGjBlyHuT1yjg8o0kPZ6iAqs1T3BlbkFJeyITgsLpXZDJprwBflbQkCX8xcZWQdgz5cdm0HLM9FKohydvQsaqd5sGZZ768cAw7DRu0H_PXAA", "model": "gpt-3.5-turbo", "instructions": "Instru\u00e7\u00f5es para o assistente.", "threads": {"minha_thread": ["Desculpe, mas n\u00e3o consigo fornecer informa\u00e7\u00f5es em tempo real, como a previs\u00e3o do tempo atual. Recomendo que voc\u00ea verifique a previs\u00e3o do tempo em um site confi\u00e1vel ou aplicativo meteorol\u00f3gico para obter as informa\u00e7\u00f5es mais atualizadas. Posso te ajudar com mais alguma coisa?", "A capital da Fran\u00e7a \u00e9 Paris."]}}}
+{
+    "meu_assistente": {
+        "api_key": "sk-svcacct-GtVAsT9HVeP8kEE3HhmWpt6T39Pb4uC-4SV2dWTMfb4ZNLoyxCgGjBlyHuT1yjg8o0kPZ6iAqs1T3BlbkFJeyITgsLpXZDJprwBflbQkCX8xcZWQdgz5cdm0HLM9FKohydvQsaqd5sGZZ768cAw7DRu0H_PXAA",
+        "model": "gpt-3.5-turbo",
+        "instructions": "Instru\u00e7\u00f5es para o assistente."
+    },
+    "my_assistant": {
+        "api_key": "sk-svcacct-GtVAsT9HVeP8kEE3HhmWpt6T39Pb4uC-4SV2dWTMfb4ZNLoyxCgGjBlyHuT1yjg8o0kPZ6iAqs1T3BlbkFJeyITgsLpXZDJprwBflbQkCX8xcZWQdgz5cdm0HLM9FKohydvQsaqd5sGZZ768cAw7DRu0H_PXAA",
+        "model": "gpt-4",
+        "instructions": "instructions.txt"
+    }
+}
