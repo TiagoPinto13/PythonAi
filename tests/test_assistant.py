@@ -4,7 +4,7 @@ import tempfile
 from unittest.mock import patch, MagicMock
 import os
 from pythonAI_wrapper.assistant import OpenAIAssistant
-from pythonAI_wrapper.config import OPENAI_API_KEY
+from config import OPENAI_API_KEY
 
 
 class TestOpenAIAssistant(unittest.TestCase):

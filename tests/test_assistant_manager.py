@@ -1,7 +1,7 @@
 import unittest
 from unittest.mock import patch, MagicMock
 from pythonAI_wrapper.assistant_manager import AssistantManager
-from pythonAI_wrapper.config import OPENAI_API_KEY
+from config import OPENAI_API_KEY
 
 class TestAssistantManager(unittest.TestCase):
 
