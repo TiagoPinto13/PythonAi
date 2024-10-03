@@ -150,47 +150,35 @@ class AssistantManager:
         return self.assistants[assistant_name]
 
     def send_prompt(self, assistant_name, thread_id, prompt):
-        """Envia um prompt para o assistente na thread especificada."""
+        """Envia um prompt para o assistente na thread especificada e atualiza o histórico."""
         if assistant_name not in self.assistants:
             raise ValueError(f"Assistente '{assistant_name}' não encontrado.")
         
-        if thread_id not in self.assistants[assistant_name].threads:
-            raise ValueError(f"Thread '{thread_id}' não encontrada.")
+        assistant = self.assistants[assistant_name]
 
-        # Verifica se o prompt é um arquivo ou diretório
-        if os.path.isfile(prompt):
-            with open(prompt, 'r') as f:
-                prompt_content = f.read()
-        elif os.path.isdir(prompt):
-            prompt_content = self.load_prompts_from_folder(prompt)
-        else:
-            prompt_content = prompt  # Caso seja um texto simples
-
-        # Adiciona a pergunta do usuário ao histórico da thread
-        self.assistants[assistant_name].threads[thread_id].append({"role": "user", "content": prompt_content})
-
-        # Envia o prompt e obtém a resposta
-        response = self.assistants[assistant_name].get_response(prompt_content)
-
-        # Adiciona a resposta do assistente ao histórico da thread
-        self.assistants[assistant_name].threads[thread_id].append({"role": "assistant", "content": response})
+        # Envia o prompt e obtém a resposta, incluindo o histórico completo na requisição
+        response = assistant.get_response(prompt, thread_id)
 
         # Salva as alterações após enviar o prompt
         self.save_assistants()
-        self.save_threads()  # Salvar as mudanças após enviar um prompt
-        
+        self.save_threads()
+
         return response
-    
     def add_context_file(self, file_path, thread_id):
         """Adiciona o conteúdo de um arquivo PDF à thread especificada."""
-        pdf_content = read_pdf(file_path)
-        
+        pdf_handler = PDFHandler()
+        pdf_content = pdf_handler.read_pdf(file_path)
+
         if pdf_content:
-            # Aqui você deve implementar como adicionar o conteúdo à sua thread
-            self.add_to_thread(thread_id, pdf_content)
+            self.add_to_thread(thread_id, pdf_content)  # Certifique-se de que `add_to_thread` existe
             print(f"Conteúdo do arquivo PDF adicionado à thread '{thread_id}'.")
         else:
-            print("Nenhum conteúdo encontrado no PDF.")
+            print("Erro: Nenhum conteúdo encontrado no PDF.")
+
+
+
+
+    
             
     def load_instructions_from_folder(self, folder_path: str):
         """Lê todos os arquivos de texto em uma pasta e retorna seu conteúdo combinado."""

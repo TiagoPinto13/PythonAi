@@ -8,5 +8,10 @@
         "api_key": "sk-svcacct-GtVAsT9HVeP8kEE3HhmWpt6T39Pb4uC-4SV2dWTMfb4ZNLoyxCgGjBlyHuT1yjg8o0kPZ6iAqs1T3BlbkFJeyITgsLpXZDJprwBflbQkCX8xcZWQdgz5cdm0HLM9FKohydvQsaqd5sGZZ768cAw7DRu0H_PXAA",
         "model": "gpt-4",
         "instructions": "instructions.txt"
+    },
+    "MeuAssistente": {
+        "api_key": "sk-svcacct-GtVAsT9HVeP8kEE3HhmWpt6T39Pb4uC-4SV2dWTMfb4ZNLoyxCgGjBlyHuT1yjg8o0kPZ6iAqs1T3BlbkFJeyITgsLpXZDJprwBflbQkCX8xcZWQdgz5cdm0HLM9FKohydvQsaqd5sGZZ768cAw7DRu0H_PXAA",
+        "model": "gpt-4",
+        "instructions": "Voc\u00ea \u00e9 um assistente de teste"
     }
 }

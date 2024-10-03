@@ -1,6 +1,7 @@
 import argparse
 from pythonAI_wrapper.assistant_manager import AssistantManager
 from config import OPENAI_API_KEY
+from pythonAI_wrapper.pdfHandler import PDFHandler
 import os
 def main():
     parser = argparse.ArgumentParser(description="CLI tool for OpenAI Assistant")
@@ -117,12 +118,10 @@ def main():
                     print("Nenhum conteúdo válido encontrado nos arquivos de texto.")
                     return
 
-            # Aqui é onde corrigimos a chamada do método
             response = manager.send_prompt(args.assistant_name, args.thread_id, prompt)
             print(f"Resposta: {response}")
         except Exception as e:
             print(f"Ocorreu um erro: {e}")
-
 
     elif args.command == "list_assistants":
         assistants = manager.list_assistants()
