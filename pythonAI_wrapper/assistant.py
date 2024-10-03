@@ -19,11 +19,15 @@ class OpenAIAssistant:
             threads (dict, optional): Dicionário de threads associadas ao assistente.
         """
         self.api_key = api_key
-        self.client = OpenAI(api_key=self.api_key)
+        self.client = OpenAI(api_key= self.api_key)
+
         self.name = name
         self.model = model
         self.instructions = instructions
-        self.threads = threads if threads is not None else {}
+        self.context_files: List[str] = []
+        self.threads: Dict[str, List[Dict]] = threads if threads is not None else {}  # Inicializa threads, se não houver
+
+        # Inicializa o cliente da API OpenAI
 
     def get_response(self, prompt: str, thread_id: str):
         """Obtém uma resposta do assistente e atualiza o histórico da thread."""
@@ -48,7 +52,6 @@ class OpenAIAssistant:
         self.threads[thread_id].append({"role": "assistant", "content": assistant_response})
 
         return assistant_response
-
 
 
     def set_model(self, model: str):
