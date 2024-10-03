@@ -108,20 +108,21 @@ def main():
                 for file_name in files:
                     file_path = os.path.join(args.prompt, file_name)
                     if file_name.endswith('.pdf'):  
-                        with open(file_path, 'r', encoding='utf-8') as f:
-                            content = f.read()
-                            prompt += content + "\n"  # Adiciona o conteúdo do arquivo ao prompt
-                    else:
-                        print(f"Ignorando o arquivo: {file_name} (não é um arquivo .txt)")
-
+                        pdf_handler = PDFHandler()
+                        prompt = pdf_handler.read_folder(args.prompt)
+                    
                 if not prompt.strip():
                     print("Nenhum conteúdo válido encontrado nos arquivos de texto.")
                     return
 
+            # Aqui é onde corrigimos a chamada do método
             response = manager.send_prompt(args.assistant_name, args.thread_id, prompt)
             print(f"Resposta: {response}")
         except Exception as e:
             print(f"Ocorreu um erro: {e}")
+
+
+
 
     elif args.command == "list_assistants":
         assistants = manager.list_assistants()

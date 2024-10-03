@@ -1,14 +1,4 @@
 {
-    "meu_assistente": {
-        "api_key": "sk-svcacct-GtVAsT9HVeP8kEE3HhmWpt6T39Pb4uC-4SV2dWTMfb4ZNLoyxCgGjBlyHuT1yjg8o0kPZ6iAqs1T3BlbkFJeyITgsLpXZDJprwBflbQkCX8xcZWQdgz5cdm0HLM9FKohydvQsaqd5sGZZ768cAw7DRu0H_PXAA",
-        "model": "gpt-3.5-turbo",
-        "instructions": "Instru\u00e7\u00f5es para o assistente."
-    },
-    "my_assistant": {
-        "api_key": "sk-svcacct-GtVAsT9HVeP8kEE3HhmWpt6T39Pb4uC-4SV2dWTMfb4ZNLoyxCgGjBlyHuT1yjg8o0kPZ6iAqs1T3BlbkFJeyITgsLpXZDJprwBflbQkCX8xcZWQdgz5cdm0HLM9FKohydvQsaqd5sGZZ768cAw7DRu0H_PXAA",
-        "model": "gpt-4",
-        "instructions": "instructions.txt"
-    },
     "MeuAssistente": {
         "api_key": "sk-svcacct-GtVAsT9HVeP8kEE3HhmWpt6T39Pb4uC-4SV2dWTMfb4ZNLoyxCgGjBlyHuT1yjg8o0kPZ6iAqs1T3BlbkFJeyITgsLpXZDJprwBflbQkCX8xcZWQdgz5cdm0HLM9FKohydvQsaqd5sGZZ768cAw7DRu0H_PXAA",
         "model": "gpt-4",
