@@ -154,3 +154,23 @@ class OpenAIAssistant:
             self.assistant = None
         else:
             raise ValueError("Assistente não encontrado.")
+        
+    def set_api_key(self, new_api_key: str):
+        """
+        Atualiza a chave API do assistente.
+
+        Args:
+            new_api_key (str): A nova chave API a ser usada.
+        """
+        self.api_key = new_api_key
+        self.client = OpenAI(api_key=self.api_key)
+    def set_api_key_for_all_assistants(self, new_api_key: str):
+        """
+        Atualiza a chave API para todos os assistentes gerenciados.
+
+        Args:
+            new_api_key (str): A nova chave API a ser usada.
+        """
+        for assistant_name, assistant in self.assistants.items():
+            assistant.set_api_key(new_api_key)
+            print(f"Chave API atualizada para o assistente '{assistant_name}'.")

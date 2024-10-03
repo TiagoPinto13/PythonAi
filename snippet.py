@@ -1,4 +1,4 @@
-# test_assistant.py
+#snippet.py
 
 # Adicionar o diretório principal ao caminho do Python
 import os
@@ -9,6 +9,7 @@ from pythonAI_wrapper.pdfHandler import PDFHandler
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from config import OPENAI_API_KEY
+
 from pythonAI_wrapper.assistant_manager import AssistantManager
 
 
@@ -17,6 +18,7 @@ from pythonAI_wrapper.assistant_manager import AssistantManager
 manager = AssistantManager()
 # Nome do assistente que será usado
 assistant_name = "MeuAssistente"
+
 
 # Criação de um assistente (se necessário)
 manager.create_assistant(OPENAI_API_KEY, assistant_name, "gpt-4", "Você é um assistente de teste")
