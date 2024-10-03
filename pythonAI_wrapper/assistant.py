@@ -19,27 +19,35 @@ class OpenAIAssistant:
             threads (dict, optional): Dicionário de threads associadas ao assistente.
         """
         self.api_key = api_key
-        self.client = OpenAI(api_key= self.api_key)
-
+        self.client = OpenAI(api_key=self.api_key)
         self.name = name
         self.model = model
         self.instructions = instructions
-        self.context_files: List[str] = []
-        self.threads: Dict[str, List[Dict]] = threads if threads is not None else {}  # Inicializa threads, se não houver
+        self.threads = threads if threads is not None else {}
 
-        # Inicializa o cliente da API OpenAI
+    def get_response(self, prompt: str, thread_id: str):
+        """Obtém uma resposta do assistente e atualiza o histórico da thread."""
+        if thread_id not in self.threads:
+            raise ValueError(f"Thread '{thread_id}' não encontrada.")
 
-    def get_response(self, prompt: str):
-        """Obtém uma resposta do assistente para um prompt dado."""
-        # A estrutura de mensagens deve ser atualizada para o novo formato da API.
-        response = self.client.chat.completions.create(  # Usar self.client
+        # Adiciona a pergunta do usuário ao histórico da thread
+        self.threads[thread_id].append({"role": "user", "content": prompt})
+
+        # Chamada à API para obter a resposta do assistente
+        response = self.client.chat.completions.create(
             model=self.model,
             messages=[
                 {"role": "system", "content": self.instructions},
-                {"role": "user", "content": prompt}
+                *self.threads[thread_id]  # Envia o histórico completo como contexto
             ]
         )
-        return response.choices[0].message.content
+
+        assistant_response = response.choices[0].message.content
+
+        # Adiciona a resposta do assistente ao histórico da thread
+        self.threads[thread_id].append({"role": "assistant", "content": assistant_response})
+
+        return assistant_response
 
 
 
