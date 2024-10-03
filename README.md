@@ -7,50 +7,118 @@ PythonAI é uma ferramenta de linha de comando (CLI) que permite interagir com u
 - Python 3.x
 - Certifique-se de ter as bibliotecas necessárias instaladas, usando `pip install -r requirements.txt`.
 
-## Configuração
+## Snippet
+*  Antes de usar a library, deve alterar a api key com o método change_api_key ou altera-la diretamente no ficheiro config.py
 
-Antes de usar a CLI, defina a chave da API do OpenAI no arquivo `config.py`:
+# CLI Tool for OpenAI Assistant
+## Comandos Disponíveis
 
-```python
-# config.py
 
-OPENAI_API_KEY = 'sua_chave_api_aqui'
+### create_assistant
+Cria um novo assistente.
+
+**Uso:**
 ```
-## Commands to use CLI Tool:
+python3 cli_tool.py create_assistant <nome> [--model <modelo>] [--instructions <instruções>]
+```
 
-### Criar um Assistente:
-  * python3 cli_tool.py create_assistant <nome_do_assistente> [--model <modelo>] [--instructions <instruções>]
-    
-    * <nome_do_assistente>: Nome do assistente a ser criado.
-    * model: Modelo da OpenAI a ser utilizado (padrão: gpt-4).
-    * instructions: Instruções personalizadas para o assistente.
-
-### Criar uma Nova Thread de Conversa:
-  * python3 cli_tool.py create_thread <nome_do_assistente> [<id_da_thread>]
-    
-      * <nome_do_assistente>: Nome do assistente a ser utilizado.
-      * <id_da_thread>: ID da thread (opcional).
-### Enviar um Prompt:
-  * python3 cli_tool.py send <nome_do_assistente> <id_da_thread> <prompt>
-  
-    * <nome_do_assistente>: Nome do assistente a ser utilizado.
-    * <id_da_thread>: ID da thread.
-    * <prompt>: O prompt a ser enviado ao assistente.
-
-### Listar Assistentes:
-  * python3 cli_tool.py list_assistants
-
-### Listar Threads de um Assistente:
-  * python3 cli_tool.py list_threads <nome_do_assistente>
-  
-    * <nome_do_assistente>: Nome do assistente para listar suas threads.
-
-### Ver Histórico de uma Thread:
-  * python3 cli_tool.py history <nome_do_assistente> <id_da_thread>
-
-    * <nome_do_assistente>: Nome do assistente.
-    * <id_da_thread>: ID da thread para ver o histórico.
+**Argumentos:**
+- `<nome>`: Nome do assistente.
+- `--model`: (Opcional) Modelo da OpenAI a ser utilizado (default: "gpt-4").
+- `--instructions`: (Opcional) Instruções para o assistente.
 
 
+### create_thread
+Cria uma nova thread de conversa.
+
+**Uso:**
+```
+python3 cli_tool.py create_thread <nome_assistente> [<thread_id>]
+```
+
+**Argumentos:**
+- `<nome_assistente>`: Nome do assistente a ser utilizado.
+- `<thread_id>`: (Opcional) ID da thread de conversa.
+
+
+### send
+Envia um prompt para o assistente.
+
+**Uso:**
+```
+python3 cli_tool.py send <nome_assistente> <thread_id> <prompt>
+```
+
+**Argumentos:**
+- `<nome_assistente>`: Nome do assistente a ser utilizado.
+- `<thread_id>`: ID da thread de conversa.
+- `<prompt>`: Texto ou caminho para um arquivo de texto ou pasta contendo o prompt.
+
+### list_assistants
+Lista todos os assistentes disponíveis.
+
+**Uso:**
+```
+python3 cli_tool.py list_assistants
+```
+
+
+### list_threads
+Lista todas as threads de um assistente.
+
+**Uso:**
+```
+python3 cli_tool.py list_threads <nome_assistente>
+```
+
+**Argumentos:**
+- `<nome_assistente>`: Nome do assistente cujas threads devem ser listadas.
+
+
+### history
+Visualiza o histórico de uma thread.
+
+**Uso:**
+```
+python3 cli_tool.py history <nome_assistente> <thread_id>
+```
+
+**Argumentos:**
+- `<nome_assistente>`: Nome do assistente.
+- `<thread_id>`: ID da thread de conversa.
+
+
+### assistant_history
+Visualiza o histórico de um assistente.
+
+**Uso:**
+```
+python3 cli_tool.py assistant_history <nome_assistente>
+```
+
+**Argumentos:**
+- `<nome_assistente>`: Nome do assistente.
+
+
+### Add file as a prompt
+Envia um ficheiro para prompt
+```
+python3 cli_tool.py send <nome_assistente> <thread_id> <caminho_ficheiro>
+```
+**Argumentos:**
+- `<nome_assistente>`: Nome do assistente.
+- `<thread_id>`: ID da thread de conversa.
+- `<caminho_pasta>`: Caminho para o ficheiro PDF
+
+
+### Add folder as a prompt
+Envia uma pasta para prompt
+```
+python3 cli_tool.py send <nome_assistente> <thread_id> <caminho_pasta>
+```
+**Argumentos:**
+- `<nome_assistente>`: Nome do assistente.
+- `<thread_id>`: ID da thread de conversa.
+- `<caminho_pasta>`: Caminho para a pasta contendo arquivos PDF
 
 
