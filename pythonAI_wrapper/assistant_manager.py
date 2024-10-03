@@ -132,7 +132,9 @@ class AssistantManager:
 
 
     def list_assistants(self):
-        """Lista todos os assistentes e seus modelos."""
+        """
+        Lista todos os assistentes e seus modelos.
+        """
         return [(name, assistant.model) for name, assistant in self.assistants.items()]
 
     def list_threads(self, assistant_name):
@@ -211,4 +213,19 @@ class AssistantManager:
                 with open(os.path.join(folder_path, file), 'r') as f:
                     prompts += f.read() + "\n"  # Adiciona o conteúdo do arquivo
         return prompts
+    def update_assistant_api_key(self, assistant_name: str, new_api_key: str):
+        """
+        Atualiza a chave API de um assistente existente.
 
+        Args:
+            assistant_name (str): O nome do assistente.
+            new_api_key (str): A nova chave API a ser usada.
+        """
+        if assistant_name not in self.assistants:
+            raise ValueError(f"Assistente '{assistant_name}' não encontrado.")
+
+        assistant = self.assistants[assistant_name]
+        assistant.set_api_key(new_api_key)
+
+        # Salvar as alterações após atualizar a chave API
+        self.save_assistants()
